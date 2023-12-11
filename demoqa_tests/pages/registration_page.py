@@ -5,9 +5,6 @@ from demoqa_tests import resource
 
 class RegistrationPage:
 
-    def __init__(self):
-        self.registered_user_data = browser.element('.table').all('td:last-child')
-
     def open(self):
         browser.open('/automation-practice-form')
 
@@ -56,6 +53,19 @@ class RegistrationPage:
 
     def submit_form(self):
         browser.element('#submit').perform(command.js.click)
+
+    @property
+    def registered_user_data(self):
+        return browser.element('.table').all('td:last-child')
+
+    def assert_user_info(
+            self, full_name, email, gender, phone_number, date_of_birth, subjects, hobbies,
+            picture, current_address, city_and_state
+    ):
+        browser.element('.table').all('td:last-child').should(have.exact_texts(
+            full_name, email, gender, phone_number, date_of_birth, subjects, hobbies,
+            picture, current_address, city_and_state)
+        )
 
     def close_modal_window(self):
         browser.element('#closeLargeModal').perform(command.js.scroll_into_view).click()

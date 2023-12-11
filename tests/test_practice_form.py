@@ -20,8 +20,9 @@ def test_registration():
     registration_page.submit_form()
 
     # THEN
-    registration_page.registered_user_data.should(have.exact_texts(
-        'Sergey Dobrovolskiy', 'dobrovolskiy@qa.ru', 'Male', '1002003040', '02 January,2100',
-        'Maths, Chemistry', 'Sports, Reading, Music', 'nolan.jpg', 'Test Address', 'NCR Delhi')
+    registration_page.assert_user_info(
+        'Sergey Dobrovolskiy', 'dobrovolskiy@qa.ru', 'Male', '1002003040',
+        '02 January,2100', 'Maths, Chemistry', 'Sports, Reading, Music', 'nolan.jpg',
+        'Test Address', 'NCR Delhi'
     )
     registration_page.close_modal_window()
