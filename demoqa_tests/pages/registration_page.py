@@ -6,54 +6,73 @@ from demoqa_tests.data.users import User
 
 class RegistrationPage:
 
+    def __init__(self):
+        self.first_name = browser.element('#firstName')
+        self.last_name = browser.element('#lastName')
+        self.email = browser.element('#userEmail')
+        self.gender = browser.all('[name=gender]')
+        self.phone_number = browser.element('#userNumber')
+        self.date_of_birth = browser.element('#dateOfBirthInput')
+        self.month_of_birth = browser.element('.react-datepicker__month-select')
+        self.year_of_birth = browser.element('.react-datepicker__year-select')
+        self.subjects = browser.element('#subjectsContainer')
+        self.subjects_input = browser.element('#subjectsInput')
+        self.hobbies = browser.all('[for^=hobbies-checkbox]')
+        self.upload_picture = browser.element("#uploadPicture")
+        self.current_address = browser.element('#currentAddress')
+        self.state = browser.element('#state')
+        self.city = browser.element('#city')
+        self.select_state_or_city = browser.all('[id^=react-select][id*=option]')
+        self.submit = browser.element('#submit')
+
     def open(self):
         browser.open('/automation-practice-form')
 
     def _fill_first_name(self, value):
-        browser.element('#firstName').should(be.blank).with_(type_by_js=True).type(value)
+        self.first_name.should(be.blank).with_(type_by_js=True).type(value)
 
     def _fill_last_name(self, value):
-        browser.element('#lastName').should(be.blank).with_(type_by_js=True).type(value)
+        self.last_name.should(be.blank).with_(type_by_js=True).type(value)
 
     def _fill_email(self, value):
-        browser.element('#userEmail').should(be.blank).with_(type_by_js=True).type(value)
+        self.email.should(be.blank).with_(type_by_js=True).type(value)
 
     def _check_box_gender(self, gender):
-        browser.all('[name=gender]').element_by(have.value(gender)).element('..').click()
+        self.gender.element_by(have.value(gender)).element('..').click()
 
     def _fill_phone_number(self, value):
-        browser.element('#userNumber').should(be.blank).with_(type_by_js=True).type(value)
+        self.phone_number.should(be.blank).with_(type_by_js=True).type(value)
 
     def _fill_date_of_birth(self, day, month, year):
-        browser.element('#dateOfBirthInput').click()
-        browser.element('.react-datepicker__month-select').type(month)
-        browser.element('.react-datepicker__year-select').type(year)
+        self.date_of_birth.click()
+        self.month_of_birth.type(month)
+        self.year_of_birth.type(year)
         browser.element(f'.react-datepicker__day--0{day}').click()
 
     def _pick_subjects(self, subject1, subject2):
-        browser.element('#subjectsContainer').click()
-        browser.element('#subjectsInput').type(subject1).press_enter()
-        browser.element('#subjectsInput').type(subject2).press_enter()
+        self.subjects.click()
+        self.subjects_input.type(subject1).press_enter()
+        self.subjects_input.type(subject2).press_enter()
 
     def _check_box_hobbies(self, hobbie1, hobbie2, hobbie3):
-        browser.all('[for^=hobbies-checkbox]').element_by(have.text(hobbie1)).click()
-        browser.all('[for^=hobbies-checkbox]').element_by(have.text(hobbie2)).click()
-        browser.all('[for^=hobbies-checkbox]').element_by(have.text(hobbie3)).click()
+        self.hobbies.element_by(have.text(hobbie1)).click()
+        self.hobbies.element_by(have.text(hobbie2)).click()
+        self.hobbies.element_by(have.text(hobbie3)).click()
 
     def _upload_picture(self, value):
-        browser.element("#uploadPicture").set_value(resource.path(value))
+        self.upload_picture.set_value(resource.path(value))
 
     def _fill_current_address(self, value):
-        browser.element('#currentAddress').should(be.blank).with_(type_by_js=True).type(value)
+        self.current_address.should(be.blank).with_(type_by_js=True).type(value)
 
     def _pick_state_and_city(self, state, city):
-        browser.element('#state').perform(command.js.scroll_into_view).click()
-        browser.all('[id^=react-select][id*=option]').element_by(have.text(state)).click()
-        browser.element('#city').click()
-        browser.all('[id^=react-select][id*=option]').element_by(have.text(city)).click()
+        self.state.perform(command.js.scroll_into_view).click()
+        self.select_state_or_city.element_by(have.text(state)).click()
+        self.city.click()
+        self.select_state_or_city.element_by(have.text(city)).click()
 
     def _submit_form(self):
-        browser.element('#submit').perform(command.js.click)
+        self.submit.perform(command.js.click)
 
     def register(self, user: User):
         self._fill_first_name(user.first_name)
