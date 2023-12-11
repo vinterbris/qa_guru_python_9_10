@@ -1,6 +1,7 @@
 from selene import browser, be, have, command
 
 from demoqa_tests import resource
+from demoqa_tests.data.users import User
 
 
 class RegistrationPage:
@@ -54,9 +55,19 @@ class RegistrationPage:
     def submit_form(self):
         browser.element('#submit').perform(command.js.click)
 
-    @property
-    def registered_user_data(self):
-        return browser.element('.table').all('td:last-child')
+    def register(self, user: User):
+        self.fill_first_name(user.first_name)
+        self.fill_last_name(user.last_name)
+        self.fill_email(user.email)
+        self.check_box_gender(user.gender)
+        self.fill_phone_number(user.phone_number)
+        self.fill_date_of_birth(user.day_of_birth, user.month_of_birth, user.year_of_birth)
+        self.pick_subjects(user.subjects[0], user.subjects[1])
+        self.check_box_hobbies(user.hobbies[0], user.hobbies[1], user.hobbies[2])
+        self.upload_picture(user.picture)
+        self.fill_current_address(user.current_address)
+        self.pick_state_and_city(user.state, user.city)
+        self.submit_form()
 
     def assert_user_info(
             self, full_name, email, gender, phone_number, date_of_birth, subjects, hobbies,
